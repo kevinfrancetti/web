@@ -19,7 +19,7 @@ public class HelloServlet extends HttpServlet {
 	private static void printInfo(HttpServletRequest req, HttpServletResponse resp){
 
 		try {
-			resp.getWriter().println("=====HEADER INFO_======\n");
+			resp.getWriter().println("=====HEADER INFO======\n");
 
 			Enumeration<String> headersNames = req.getHeaderNames();
 			while (headersNames.hasMoreElements()){
