@@ -49,7 +49,7 @@ public class HelloServlet extends HttpServlet {
 		if(pathFragments.length > 1){
 			try {
 				//res.sendError(400, "bad url");
-				res.getWriter().println("culo");
+				res.getWriter().println("ciaoo");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
