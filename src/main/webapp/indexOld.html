@@ -9,7 +9,7 @@
 
 <p>Item</p>
 
-<form method="POST" action="item" enctype="application/x-www-form-urlencoded">
+<form method="POST" action="hello" enctype="application/x-www-form-urlencoded">
     <ul>
         <li>name:	<input name="name" type="text" /></li>
         <li>description: <input name="description" type="text" /></li>
@@ -18,15 +18,17 @@
     <input type="submit" value="send with post"/>
 </form>
 
+<p>---</p>
 
-<form method="DELETE" action="item" enctype="application/x-www-form-urlencoded">
+<form method="GET" action="hello">
     <ul>
         <li>name:	<input name="name" type="text" /></li>
         <li>description: <input name="description" type="text" /></li>
         <li>author: <input name="author" type="text" /></li>
     </ul>
-    <input type="submit" value="DELETE"/>
+    <input type="submit" value="send with get"/>
 </form>
+
 </body>
 
 </html>

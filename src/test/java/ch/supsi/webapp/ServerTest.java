@@ -2,6 +2,7 @@ package ch.supsi.webapp;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.charset.Charset;
@@ -27,33 +28,6 @@ public class ServerTest {
         System.out.println("ola");
     }
 
-    @Test
-    public void putItem() {
-
-        List<Item> list = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
-            Item item = new Item();
-            item.setName(randomString());
-            item.setAuthor(randomString());
-            item.setDescription(randomString());
-            list.add(item);
-        }
-
-        list.forEach((i) -> s.putItem(i));
-
-        Item item = new Item();
-        item.setAuthor(randomString());
-        item.setName(randomString());
-        item.setDescription(randomString());
-
-        //list.add(item);
-
-        for(Item i : list){
-            assert (s.contains(i));
-        }
-
-
-    }
 
     @Test
     public void setName() {

@@ -3,9 +3,12 @@ package ch.supsi.webapp;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Dio boia
+ */
 public class Server implements Servers {
 
-    private List<Item> items = new ArrayList<>();
+    public List<Item> items = new ArrayList<>();
 
     @Override
     public String getItemAsJsonString(int index) {
@@ -13,9 +16,12 @@ public class Server implements Servers {
     }
 
     @Override
-    public void putItem(Item item) {
-        if(!contains(item))
+    public boolean putItem(Item item) {
+        if(!contains(item)){
             items.add(item);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -32,4 +38,6 @@ public class Server implements Servers {
     public boolean contains(Item item) {
         return items.contains(item);
     }
+
+
 }
