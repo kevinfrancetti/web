@@ -1,9 +1,12 @@
 package ch.supsi.webapp;
 
 class Item {
-    private String name = null;
-    private String description = null;
-    private String author = null;
+
+
+    Integer id = null;
+    String name = null;
+    String description = null;
+    String author = null;
 
     public String getName(){
         return name;

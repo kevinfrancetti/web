@@ -39,5 +39,9 @@ public class Server implements Servers {
         return items.contains(item);
     }
 
+    public List<Item> getAll(){
+        return items;
+    }
+
 
 }
