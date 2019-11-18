@@ -1,19 +1,15 @@
 package ch.supsi.webapp;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Enumeration;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 @WebServlet(value = "/items/*")
 @SuppressWarnings("serial")
@@ -70,10 +66,11 @@ public class HelloServlet extends HttpServlet {
         }
     }
 
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-        res.getWriter().println(req.getParameterMap().containsKey("name"));
+        //res.getWriter().println(req.getParameterMap().containsKey("name"));
         if (req.getParameterMap().size() == 3) {
             if (!req.getParameterMap().containsKey(NAME)) {
                 res.sendError(BAD_REQUEST, "wrong paramater name or more");
@@ -95,7 +92,7 @@ public class HelloServlet extends HttpServlet {
                 //res.setContentType("application/json");
                 //res.getWriter().println(jsonItem);
             } else {
-                res.sendError(409, "DUPLICATE ITEM!");
+                res.sendError(DUPLICATE, "DUPLICATE ITEM!");
                 res.getWriter().println();
             }
 
@@ -107,27 +104,91 @@ public class HelloServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws IOException {
-
         // DELETE /items
         if (req.getPathInfo() == null) {
-            res.setStatus(BAD_REQUEST);
+            res.setContentType("application/json");
+            res.sendError(BAD_REQUEST, "SELECT ONE ITEM");
             return;
-        } else {// GET /items/...
+        } else {// DELETE /items/...
             String[] tokens = tokenize(req.getPathInfo());
-            if (tokens.length > 2) {
-                res.setStatus(BAD_REQUEST);
+            if(tokens.length == 0){
+                res.setContentType("application/json");
+                res.sendError(BAD_REQUEST, "SELECT ONE ITEM");
                 return;
-            }else{
-
-
+            }else if (tokens.length > 2) {
+                res.sendError(NOT_FOUND, "NOT FOUND, bad url");
+                return;
             }
 
+            //Get the number after the slash bar es: /items/3 sets index_index = 3
+            int item_index = Integer.parseInt(tokens[1]);
+            if(server.items.size() <= item_index){
+                res.sendError(NOT_FOUND, "No such item with index: " + item_index);
+                return;
+            }
             res.setContentType("application/json");
-
+            objectMapper.writeValue(res.getWriter(), server.items.remove(item_index));
         }
     }
 
+    private int getItemIndexFromRequest(HttpServletRequest req) throws IOException {
+        if (req.getPathInfo() == null) {
+            return -1;
+        } else {
+            String[] tokens = tokenize(req.getPathInfo());
+            if (tokens.length == 1) {
+                int item_index = Integer.parseInt(tokens[1]);
+                return item_index;
+            }
+            return -1;
+        }
+    }
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        // DELETE /items
+        if (req.getPathInfo() == null) {
+            res.setContentType("application/json");
+            res.sendError(BAD_REQUEST, "SELECT ONE ITEM");
+            return;
+        } else {// DELETE /items/...
+            String[] tokens = tokenize(req.getPathInfo());
+            if(tokens.length == 0){
+                res.setContentType("application/json");
+                res.sendError(BAD_REQUEST, "SELECT ONE ITEM");
+                return;
+            }else if (tokens.length > 2) {
+                res.sendError(NOT_FOUND, "NOT FOUND, bad url");
+                return;
+            }
+
+            if (req.getParameterMap().size() == 3) {
+                if (!req.getParameterMap().containsKey(NAME)) {
+                    res.sendError(BAD_REQUEST, "wrong paramater name or more");
+                    return;
+                } else if (!req.getParameterMap().containsKey(DESCRIPTION)) {
+                    res.sendError(BAD_REQUEST, "wrong paramater description or more");
+                    return;
+                } else if (!req.getParameterMap().containsKey(AUTHOR)) {
+                    res.sendError(BAD_REQUEST, "wrong paramater author");
+                    return;
+                }
+            }
+
+            //Get the number after the slash bar es: /items/3 sets index_index = 3
+            int item_index = Integer.parseInt(tokens[1]);
+            if(server.items.size() <= item_index){
+                res.sendError(NOT_FOUND, "No such item with index: " + item_index);
+                return;
+            }
+            res.setContentType("application/json");
+            server.items.get(item_index).name = req.getParameter(NAME);
+            server.items.get(item_index).description = req.getParameter(DESCRIPTION);
+            server.items.get(item_index).author = req.getParameter(AUTHOR);
+        }
+    }
+
+    //Used for debugging
     private static void printInfo(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
         res.getWriter().println("=====PATH INFO======\n");
