@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Dio boia
+ *
+ * Some Description here
+ *
+ *
+ * @author  Kevin Francetti
+ * @version 0.0.1
+ *
  */
 public class Server implements Servers {
 

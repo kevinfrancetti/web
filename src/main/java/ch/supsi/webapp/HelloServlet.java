@@ -36,6 +36,8 @@ public class HelloServlet extends HttpServlet {
         return s.split("/");
     }
 
+
+
     //GET /item/
     //GET /item/[0-9]
     @Override
@@ -48,13 +50,23 @@ public class HelloServlet extends HttpServlet {
             return;
         } else {// GET /items/...
             String[] tokens = tokenize(req.getPathInfo());
-            if (tokens.length > 2) {
+            if(tokens.length == 0){
+                res.setContentType("application/json");
+                objectMapper.writeValue(res.getWriter(), server.items);
+                return;
+            }else if (tokens.length > 2) {
                 res.sendError(NOT_FOUND, "NOT FOUND, bad url");
                 return;
             }
 
+            //Get the number after the slash bar es: /items/3 sets index_index = 3
+            int item_index = Integer.parseInt(tokens[1]);
+            if(server.items.size() <= item_index){
+                res.sendError(NOT_FOUND, "No such item with index: " + item_index);
+                return;
+            }
             res.setContentType("application/json");
-            objectMapper.writeValue(res.getWriter(), server.items);
+            objectMapper.writeValue(res.getWriter(), server.items.get(item_index));
         }
     }
 

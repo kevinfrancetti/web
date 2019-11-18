@@ -2,7 +2,6 @@ package ch.supsi.webapp;
 
 class Item {
 
-
     Integer id = null;
     String name = null;
     String description = null;
