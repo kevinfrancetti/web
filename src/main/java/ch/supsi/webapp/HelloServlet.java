@@ -27,12 +27,9 @@ public class HelloServlet extends HttpServlet {
     private ObjectMapper objectMapper = new ObjectMapper();
     Server server = new Server();
 
-
     String[] tokenize(String s) {
         return s.split("/");
     }
-
-
 
     //GET /item/
     //GET /item/[0-9]
@@ -65,7 +62,6 @@ public class HelloServlet extends HttpServlet {
             objectMapper.writeValue(res.getWriter(), server.items.get(item_index));
         }
     }
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
@@ -197,7 +193,6 @@ public class HelloServlet extends HttpServlet {
         res.getWriter().println("getPathInfo(): " + req.getPathInfo());
         res.getWriter().println("getAuthType(): " + req.getAuthType());
 
-
         res.getWriter().println("=====HEADER INFO======\n");
 
         Enumeration<String> headersNames = req.getHeaderNames();
@@ -213,10 +208,6 @@ public class HelloServlet extends HttpServlet {
             String parameterName = parametersNames.nextElement();
             res.getWriter().println(parameterName + ": " + req.getParameter(parameterName));
         }
-
         res.getWriter().println("=====END INFO======\n\n");
-
     }
-
 }
-
