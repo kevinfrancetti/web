@@ -49,8 +49,8 @@ public class HelloServlet extends HttpServlet {
         }
     }
 
-
-    protected void doPatch(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse res) throws IOException {
         // DELETE /items
         if (req.getPathInfo() == null) {
             res.setContentType("application/json");
@@ -205,8 +205,7 @@ public class HelloServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    protected void doPatch(HttpServletRequest req, HttpServletResponse res) throws IOException {
         if (req.getPathInfo() == null) {
             res.setContentType("application/json");
             res.sendError(BAD_REQUEST, "SELECT ONE ITEM");
