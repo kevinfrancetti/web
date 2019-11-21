@@ -31,6 +31,71 @@ public class HelloServlet extends HttpServlet {
         return s.split("/");
     }
 
+
+    /**
+     * Overriding service method.
+     * Source code at: https://github.com/javaee/servlet-spec/blob/master/src/main/java/javax/servlet/http/HttpServlet.java
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
+    public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (req.getMethod().equalsIgnoreCase("PATCH")){
+            doPatch(req, resp);
+        } else {
+            super.service(req, resp);
+        }
+    }
+
+
+    protected void doPatch(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        // DELETE /items
+        if (req.getPathInfo() == null) {
+            res.setContentType("application/json");
+            res.sendError(BAD_REQUEST, "SELECT ONE ITEM");
+            return;
+        } else {// DELETE /items/...
+            String[] tokens = tokenize(req.getPathInfo());
+            if(tokens.length == 0){
+                res.setContentType("application/json");
+                res.sendError(BAD_REQUEST, "SELECT ONE ITEM");
+                return;
+            }else if (tokens.length > 2) {
+                res.sendError(NOT_FOUND, "NOT FOUND, bad url");
+                return;
+            }
+
+            if (req.getParameterMap().size() == 3) {
+                if (!req.getParameterMap().containsKey(NAME)) {
+                    res.sendError(BAD_REQUEST, "wrong paramater name or more");
+                    return;
+                } else if (!req.getParameterMap().containsKey(DESCRIPTION)) {
+                    res.sendError(BAD_REQUEST, "wrong paramater description or more");
+                    return;
+                } else if (!req.getParameterMap().containsKey(AUTHOR)) {
+                    res.sendError(BAD_REQUEST, "wrong paramater author");
+                    return;
+                }
+            }
+
+            //Get the number after the slash bar es: /items/3 sets index_index = 3
+            int item_index = Integer.parseInt(tokens[1]);
+            if(server.items.size() <= item_index){
+                res.sendError(NOT_FOUND, "No such item with index: " + item_index);
+                return;
+            }
+            res.setContentType("application/json");
+
+            server.items.remove(item_index);
+            Item item = new Item(req.getParameter(NAME), req.getParameter(DESCRIPTION), req.getParameter(AUTHOR));
+            server.items.add(item);
+        }
+    }
+
+
+
     //GET /item/
     //GET /item/[0-9]
     @Override
@@ -142,12 +207,11 @@ public class HelloServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        // DELETE /items
         if (req.getPathInfo() == null) {
             res.setContentType("application/json");
             res.sendError(BAD_REQUEST, "SELECT ONE ITEM");
             return;
-        } else {// DELETE /items/...
+        } else {
             String[] tokens = tokenize(req.getPathInfo());
             if(tokens.length == 0){
                 res.setContentType("application/json");
@@ -178,6 +242,7 @@ public class HelloServlet extends HttpServlet {
                 return;
             }
             res.setContentType("application/json");
+
             server.items.get(item_index).name = req.getParameter(NAME);
             server.items.get(item_index).description = req.getParameter(DESCRIPTION);
             server.items.get(item_index).author = req.getParameter(AUTHOR);
