@@ -1,6 +1,7 @@
-package ch.supsi.web;
+package ch.supsi.web.controller;
 
 
+import ch.supsi.web.model.Item;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,11 @@ import java.util.List;
 @RestController
 public class ControllerItem {
 
-    List<Item> itemList = new ArrayList<>();
+    static List<Item> itemList = new ArrayList<>();
+
+    static {
+        itemList.add(new Item(1,"kev", "bro", "loco"));
+    }
 
     @RequestMapping(value="/items", method = RequestMethod.GET)
     ResponseEntity<List<Item>> get(){
@@ -20,6 +25,7 @@ public class ControllerItem {
 
     @RequestMapping(value="/items/{id}", method = RequestMethod.GET)
     ResponseEntity<Item> getItem(@PathVariable int id){
+        getItem(id);
         return new ResponseEntity<>(itemList.get(id), HttpStatus.OK);
     }
 
