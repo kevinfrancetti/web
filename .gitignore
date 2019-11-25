@@ -24,6 +24,9 @@
 *.iml
 target/
 
+#Maven
+.mvn/*
+mvnw*
 
 #Other
 .DS_Store
