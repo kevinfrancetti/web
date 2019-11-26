@@ -2,6 +2,8 @@ package ch.supsi.web.controller;
 
 
 import ch.supsi.web.model.Item;
+import ch.supsi.web.repository.ItemRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +16,12 @@ import java.util.Random;
 @RestController
 public class ControllerItem {
 
-    List<Item> itemList = new ArrayList<>();
-    static Random rnd = new Random();
+    List<Item> itemList = new ArrayList<>();//TODO will be deleted
+
+    @Autowired
+    private ItemRepository itemRepository;
+
+    static Random rnd = new Random();//TODO wiil be deleted
 
     static {
         rnd.setSeed(System.currentTimeMillis());
@@ -23,11 +29,11 @@ public class ControllerItem {
 
     @RequestMapping(value="/items", method = RequestMethod.GET)
     ResponseEntity<List<Item>> get(){
-        return new ResponseEntity<>(itemList, HttpStatus.OK);
+        return new ResponseEntity<>(itemRepository.findAll(), HttpStatus.OK);
     }
 
     private Optional<Item> getItem(int id){
-        return itemList.stream().filter(item -> item.getId() == id).findFirst();
+        return itemRepository.findById(id);
     }
 
 
@@ -39,8 +45,7 @@ public class ControllerItem {
 
     @RequestMapping(value="/items", method = RequestMethod.POST)
     public ResponseEntity<Item> post(@RequestBody Item item){
-        item.setId(rnd.nextInt());
-        itemList.add(item);
+        itemRepository.save(item);
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 
@@ -49,10 +54,13 @@ public class ControllerItem {
         Optional<Item> itemAskedToChange = getItem(id);
         if(!itemAskedToChange.isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         Item oldItem = itemAskedToChange.get();
-        itemList.remove(oldItem);
+        //itemList.remove(oldItem);
+        //itemRepository.deleteById(id);
         item.setId(id);
-        itemList.add(item);
-        return new ResponseEntity<>(oldItem, HttpStatus.OK);
+        itemRepository.save(item);
+        Item i = new Item(222,"culo", "culo", "culo");
+        //itemList.add(item);
+        return new ResponseEntity<>(i, HttpStatus.OK);
     }
 
     @RequestMapping(value="/items/{id}", method = RequestMethod.DELETE)
