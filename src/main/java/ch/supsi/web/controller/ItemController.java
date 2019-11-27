@@ -8,24 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @RestController
-public class ControllerItem {
-
-    List<Item> itemList = new ArrayList<>();//TODO will be deleted
+public class ItemController {
 
     @Autowired
     private ItemRepository itemRepository;
-
-    static Random rnd = new Random();//TODO wiil be deleted
-
-    static {
-        rnd.setSeed(System.currentTimeMillis());
-    }
 
     @RequestMapping(value="/items", method = RequestMethod.GET)
     ResponseEntity<List<Item>> get(){
@@ -35,7 +26,6 @@ public class ControllerItem {
     private Optional<Item> getItem(int id){
         return itemRepository.findById(id);
     }
-
 
     @RequestMapping(value="/items/{id}", method = RequestMethod.GET)
     ResponseEntity<Item> get(@PathVariable int id){
@@ -53,24 +43,20 @@ public class ControllerItem {
     ResponseEntity<Item> put(@PathVariable int id, @RequestBody Item item){
         Optional<Item> itemAskedToChange = getItem(id);
         if(!itemAskedToChange.isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        Item oldItem = itemAskedToChange.get();
-        //itemList.remove(oldItem);
-        //itemRepository.deleteById(id);
         item.setId(id);
         itemRepository.save(item);
-        Item i = new Item(222,"culo", "culo", "culo");
-        //itemList.add(item);
-        return new ResponseEntity<>(i, HttpStatus.OK);
+        return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
     @RequestMapping(value="/items/{id}", method = RequestMethod.DELETE)
     ResponseEntity<Item> delete(@PathVariable int id){
         Optional<Item> itemAskedToDelete = getItem(id);
-
         if(itemAskedToDelete.isPresent()){
             Item removedItem = itemAskedToDelete.get();
-            itemList.remove(removedItem);
+            itemRepository.deleteById(id);
             return new ResponseEntity<>(removedItem, HttpStatus.OK);
-        }else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
