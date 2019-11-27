@@ -12,6 +12,7 @@ public class Item {
     @GeneratedValue
     private int id;
 
+    @Column(columnDefinition = "TEXT")
     private String name;
 
     private String description;
