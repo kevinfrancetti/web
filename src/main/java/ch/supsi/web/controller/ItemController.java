@@ -2,6 +2,7 @@ package ch.supsi.web.controller;
 
 
 import ch.supsi.web.model.Item;
+import ch.supsi.web.model.User;
 import ch.supsi.web.repository.ItemRepository;
 import ch.supsi.web.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,6 @@ import java.util.Optional;
 
 @RestController
 public class ItemController {
-
-    @Autowired
-    private ItemRepository itemRepository;
 
     @Autowired
     private ItemService itemService;
@@ -34,6 +32,7 @@ public class ItemController {
 
     @RequestMapping(value="/items", method = RequestMethod.POST)
     public ResponseEntity<Item> post(@RequestBody Item item){
+        //item.setUser(new User("Pippo")); //TODO change this
         itemService.persist(item);
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }

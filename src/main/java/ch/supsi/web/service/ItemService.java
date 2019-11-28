@@ -1,7 +1,9 @@
 package ch.supsi.web.service;
 
 import ch.supsi.web.model.Item;
+import ch.supsi.web.model.User;
 import ch.supsi.web.repository.ItemRepository;
+import ch.supsi.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,8 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
-
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Item> getAll(){
         return itemRepository.findAll();
@@ -25,6 +28,8 @@ public class ItemService {
     }
 
     public Item persist(Item itemEntity){
+        User u = itemEntity.getUser();//TODO change this
+        userRepository.save(u);//TODO change this
         return itemRepository.save(itemEntity);
     }
 

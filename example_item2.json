@@ -1,0 +1,9 @@
+{
+  "id": 13,
+  "name": "un nome",
+  "description": "una descrizione",
+  "author": "un autore",
+  "user": {
+    "userName": "nome utente"
+  }
+}

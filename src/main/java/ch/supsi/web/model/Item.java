@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 @Entity
+@Table(name="items")
 public class Item {
 
     @Id
@@ -18,6 +19,11 @@ public class Item {
     private String description;
 
     private String author;
+
+    @ManyToOne
+    @JoinColumn(name="FK_USER_ID")
+    private User user;
+
 
     @Override
     public String toString(){
