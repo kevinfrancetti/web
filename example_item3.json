@@ -1,13 +1,11 @@
-[
-  {
-    "id": 25,
-    "title": "Vendo gatti",
-    "description": "Vendo gatti moldo belli",
-    "category": {
-      "name": "GATTI"
-    },
-    "author": {
-      "userName": "Re dei gatti"
-    }
+{
+  "title": "Vendo cani",
+  "description": "Cucciolata di cani",
+  "category": {
+    "name": "CANI"
+  },
+  "author": {
+    "name": "user1",
+    "role": "QUALSISI COSA INSERIRSCO QUA NON DA MAI ERRORI!!"
   }
-]
+}
