@@ -1,21 +1,37 @@
 package ch.supsi.web.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import lombok.experimental.Accessors;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Accessors(chain = true)
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
+    public User(String name, Role role){
+        this.name = name;
+        this.role = role;
+    }
+
     @Id
-    private String userName;
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(mappedBy = "author")
+    @JsonIgnore
+    private List<Item> items;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_role")
+    private Role role;
 
 }

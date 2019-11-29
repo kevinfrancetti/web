@@ -1,32 +1,43 @@
 package ch.supsi.web.model;
 
 import lombok.*;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.List;
 
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Accessors(chain = true)
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name="items")
+@Table(name = "items")
 public class Item {
 
     @Id
     @GeneratedValue
     private int id;
 
-    @Column(columnDefinition = "TEXT")
-    private String name;
+    private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String author;
+    @ManyToOne
+    @JoinColumn(name="FK_CATEGORY_ID")
+    //@Cascade(org.hibernate.annotations.CascadeType.PERSIST)
+    private Category category;
 
     @ManyToOne
-    @JoinColumn(name="FK_USER_ID")
-    private User user;
-
+    @JoinColumn(name = "FK_AUTHOR")
+    //@Cascade(org.hibernate.annotations.CascadeType.PERSIST)
+    private User author;
 
     @Override
-    public String toString(){
-        return "id: " + id + " name: " + name + " description: " + description + " author: " + author;
+    public String toString() {
+        return "id: " + id + " title: " + title + " description: " + description + " author: " + author;
     }
 }

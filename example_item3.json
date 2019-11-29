@@ -1,0 +1,13 @@
+[
+  {
+    "id": 25,
+    "title": "Vendo gatti",
+    "description": "Vendo gatti moldo belli",
+    "category": {
+      "name": "GATTI"
+    },
+    "author": {
+      "userName": "Re dei gatti"
+    }
+  }
+]
