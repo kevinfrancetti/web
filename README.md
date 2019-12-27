@@ -20,13 +20,13 @@ Lista endpoints:
         
         ```json
         {
-            "title": "Vendo cani",
-            "description": "Cucciolata di cani malati",
+            "title": "Un titolo",
+            "description": "Una descrizione",
             "category": {
-                "name": "C1"
+                "name": "Nome della categoria"
             },
             "author": {
-            "name": "Jupiter",
+            "name": "Nome del autore",
             }
         }
         ```
