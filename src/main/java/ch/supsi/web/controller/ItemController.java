@@ -36,19 +36,19 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @RequestMapping(value="/items", method = RequestMethod.GET)
+    @RequestMapping(value="/item", method = RequestMethod.GET)
     ResponseEntity<List<Item>> get(){
         log.info("get method called");
         return new ResponseEntity<>(itemService.getAll(), HttpStatus.OK);
     }
 
 
-    @RequestMapping(value="/items/{id}", method = RequestMethod.GET)
+    @RequestMapping(value="/item/{id}", method = RequestMethod.GET)
     ResponseEntity<Item> get(@PathVariable int id){
         return itemService.exist(id) ? new ResponseEntity<>(itemService.get(id), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value="/items", method = RequestMethod.POST)
+    @RequestMapping(value="/item", method = RequestMethod.POST)
     public ResponseEntity<Item> post(@RequestBody Item item){
         if(itemService.exist(item.getId()))
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
@@ -56,7 +56,7 @@ public class ItemController {
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value="/items/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value="/item/{id}", method = RequestMethod.PUT)
     ResponseEntity<Item> put(@PathVariable int id, @RequestBody Item item){
         if(!itemService.exist(id)) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         item.setId(id);
@@ -64,7 +64,7 @@ public class ItemController {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/items/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value="/item/{id}", method = RequestMethod.DELETE)
     ResponseEntity<Item> delete(@PathVariable int id){
         if(itemService.exist(id)){
             Item removedItem = itemService.get(id);
