@@ -4,6 +4,7 @@ import ch.supsi.web.model.Item;
 import ch.supsi.web.model.User;
 import ch.supsi.web.repository.ItemRepository;
 import ch.supsi.web.service.ItemService;
+import ch.supsi.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -36,9 +38,13 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value="/item", method = RequestMethod.GET)
     ResponseEntity<List<Item>> get(){
         log.info("get method called");
+
         return new ResponseEntity<>(itemService.getAll(), HttpStatus.OK);
     }
 
@@ -48,13 +54,28 @@ public class ItemController {
         return itemService.exist(id) ? new ResponseEntity<>(itemService.get(id), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value="/item", method = RequestMethod.POST)
-    public ResponseEntity<Item> post(@RequestBody Item item){
+    @RequestMapping(value="/item", method = RequestMethod.POST, headers = {"Content-Type=application/json"})
+    public ResponseEntity<Item> postJson(@RequestBody Item item){
+        log.info("POST application/json");
+
         if(itemService.exist(item.getId()))
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         itemService.persist(item);
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
+
+    @RequestMapping(value="/item", method = RequestMethod.POST, headers = {"Content-Type=application/x-www-form-urlencoded"})
+    public ResponseEntity<Item> postUrlEncoded(@RequestParam Map<String, String> map){
+        log.info("POST x-www-form-urlencoded");
+
+        Item item = new Item().setTitle(map.get("title")).setAuthor(userService.getUserById(map.get("author"))).setDescription(map.get("description"));
+        if(itemService.exist(item.getId()))
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        itemService.persist(item);
+        return new ResponseEntity<>(item, HttpStatus.CREATED);
+    }
+
+
 
     @RequestMapping(value="/item/{id}", method = RequestMethod.PUT)
     ResponseEntity<Item> put(@PathVariable int id, @RequestBody Item item){
