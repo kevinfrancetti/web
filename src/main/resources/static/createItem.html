@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Kevin">
+    <meta name="keywords" content="Compro, Vendo">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Create</title>
+</head>
+<body>
+<header><h1>Inserimento articolo</h1></header>
+<nav>
+    <a href="./index.html">Home</a> |
+    <a>Crea Item</a> |
+    <a href="/css/">Opzione 1</a> |
+    <a href="/js/">Opzione 2</a> |
+    <a href="/jquery/">Opzione 3</a>
+</nav>
+
+<form action="http://localhost:8080/item" method="post">
+    <fieldset>
+        <legend>Inserimento articolo</legend>
+
+        <div>
+            <label for="titolo">Titolo:<br></label>
+            <input type="text" id="titolo" name="title">
+        </div>
+        <div>
+            <label for="autore">Autore:<br></label>
+            <input type="text" id="autore" name="author">
+        </div>
+        <div>
+            <label for="categoria">Categoria:<br></label>
+            <select id="categoria" name="category">
+                <option value="C1">C1</option>
+                <option value="C2">C2</option>
+                <option value="C3">Mercedes</option>
+                <option value="C4">Audi</option>
+            </select>
+        </div>
+        <div>
+            <label for="description">Descrizione:<br></label>
+            <textarea id="description" name="description"></textarea>
+        </div>
+        <div>
+            <input type="submit" value="CREA ITEM">
+        </div>
+    </fieldset>
+</form>
+
+</body>
+</html>

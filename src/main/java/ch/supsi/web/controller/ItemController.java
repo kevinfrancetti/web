@@ -1,8 +1,7 @@
 package ch.supsi.web.controller;
 
 import ch.supsi.web.model.Item;
-import ch.supsi.web.model.User;
-import ch.supsi.web.repository.ItemRepository;
+import ch.supsi.web.service.CategoryService;
 import ch.supsi.web.service.ItemService;
 import ch.supsi.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +38,9 @@ public class ItemController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @RequestMapping(value="/item", method = RequestMethod.GET)
     ResponseEntity<List<Item>> get(){
@@ -68,7 +69,11 @@ public class ItemController {
     public ResponseEntity<Item> postUrlEncoded(@RequestParam Map<String, String> map){
         log.info("POST x-www-form-urlencoded");
 
-        Item item = new Item().setTitle(map.get("title")).setAuthor(userService.getUserById(map.get("author"))).setDescription(map.get("description"));
+        Item item = new Item().setTitle(map.get("title"))
+                .setAuthor(userService.getById(map.get("author")))
+                .setDescription(map.get("description"))
+                .setCategory(categoryService.getById(map.get("category")));
+
         if(itemService.exist(item.getId()))
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         itemService.persist(item);
