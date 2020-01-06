@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="Kevin">
     <meta name="keywords" content="Compro, Vendo">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" th:href="@{/CSS/style.css}">
     <title>Create</title>
 </head>
 <body>
 <header><h1>Inserimento articolo</h1></header>
 <nav>
-    <a href="./index.html">Home</a> |
-    <a href="./createItem.html">Crea Item</a> |
-    <a href="./itemDetails.html">Opzione 1</a> |
+    <a th:href="@{/}">Home</a> |
+    <a>Crea Item</a> |
 </nav>
 
 <form action="http://localhost:8080/item" method="post">
@@ -31,10 +30,13 @@
         <div>
             <label for="categoria">Categoria:<br></label>
             <select id="categoria" name="category">
-                <option value="C1">C1</option>
-                <option value="C2">C2</option>
-                <option value="C3">Mercedes</option>
-                <option value="C4">Audi</option>
+                <option th:each="t: ${categories}" th:value="${t}" th:text="${t.name}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="typeID">Tipo:<br></label>
+            <select id="typeID" name="type">
+                <option th:each="t: ${types}" th:value="${t}" th:text="${t}"></option>
             </select>
         </div>
         <div>

@@ -6,6 +6,8 @@ import ch.supsi.web.repository.CategotyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
 
@@ -17,6 +19,9 @@ public class CategoryService {
         return categotyRepository.findById(id).get();
     }
 
+    public List<Category> getAll(){
+        return categotyRepository.findAll();
+    }
 
 
 }

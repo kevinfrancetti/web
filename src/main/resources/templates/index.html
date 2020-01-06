@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="Kevin">
     <meta name="keywords" content="Compro, Vendo">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" th:href="@{/CSS/style.css}">
     <title>Home</title>
 </head>
 <body>
-<header><h1>Nome del sito</h1></header>
+<header><h1>Nome del sito template</h1></header>
 <nav>
-    <a href="./index.html">Home</a> |
-    <a href="./createItem.html">Crea Item</a> |
-    <a href="./itemDetails.html">Opzione 1</a> |
+    <a>Home</a> |
+    <a th:href="@{/item/new}">Crea Item</a> |
 </nav>
 
 

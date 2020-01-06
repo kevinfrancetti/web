@@ -42,7 +42,7 @@ public class ItemController {
     @Autowired
     private CategoryService categoryService;
 
-    @RequestMapping(value="/item", method = RequestMethod.GET)
+    @RequestMapping(value="/items", method = RequestMethod.GET)
     ResponseEntity<List<Item>> get(){
         log.info("get method called");
 
@@ -50,12 +50,12 @@ public class ItemController {
     }
 
 
-    @RequestMapping(value="/item/{id}", method = RequestMethod.GET)
+    @RequestMapping(value="/items/{id}", method = RequestMethod.GET)
     ResponseEntity<Item> get(@PathVariable int id){
         return itemService.exist(id) ? new ResponseEntity<>(itemService.get(id), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value="/item", method = RequestMethod.POST, headers = {"Content-Type=application/json"})
+    @RequestMapping(value="/items", method = RequestMethod.POST, headers = {"Content-Type=application/json"})
     public ResponseEntity<Item> postJson(@RequestBody Item item){
         log.info("POST application/json");
 
@@ -65,7 +65,7 @@ public class ItemController {
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value="/item", method = RequestMethod.POST, headers = {"Content-Type=application/x-www-form-urlencoded"})
+    @RequestMapping(value="/items", method = RequestMethod.POST, headers = {"Content-Type=application/x-www-form-urlencoded"})
     public ResponseEntity<Item> postUrlEncoded(@RequestParam Map<String, String> map){
         log.info("POST x-www-form-urlencoded");
 
@@ -82,16 +82,18 @@ public class ItemController {
 
 
 
-    @RequestMapping(value="/item/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value="/items/{id}", method = RequestMethod.PUT)
     ResponseEntity<Item> put(@PathVariable int id, @RequestBody Item item){
+        log.info("");
         if(!itemService.exist(id)) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         item.setId(id);
         itemService.persist(item);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/item/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value="/items/{id}", method = RequestMethod.DELETE)
     ResponseEntity<Item> delete(@PathVariable int id){
+        log.info("");
         if(itemService.exist(id)){
             Item removedItem = itemService.get(id);
             itemService.delete(id);
